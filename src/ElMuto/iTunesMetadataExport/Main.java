@@ -2,24 +2,12 @@ package ElMuto.iTunesMetadataExport;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException; 
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.*;
 
 import java.io.File;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Entity;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -27,8 +15,14 @@ import org.w3c.dom.NodeList;
 
 public class Main {
 	public static void main(String[] args) {
+		String nullStr = "NULL";
+		String sep = "\t";
 
-		String inputFileName = "data/iTunes Music Library.xml";
+		String inputFileName = "data/iTunes Music Library.xml";		
+		String[] interestingKeys = { "Artist", "Album", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
+
+		String[] interestingArtists = { "Solange" };
+		String[] interestingTitles  = { "Rise", "Weary" };
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
@@ -45,7 +39,13 @@ public class Main {
 			Node currNode = mainDict.getFirstChild();
 			while (!currNode.getNodeName().equals("dict")) currNode = currNode.getNextSibling();
 			Node titleDict = currNode;
-						
+			
+			String header = interestingKeys[0];
+			for (int j = 1; j < interestingKeys.length; j++) {
+				header += sep + interestingKeys[j];
+			}
+			
+			System.out.println(header);
 			// iterate over titles
 			NodeList titles = titleDict.getChildNodes();
 			for (int i = 0; i < titles.getLength(); i++) {
@@ -63,23 +63,37 @@ public class Main {
 						}
 					}
 					
-					String[] interestingKeys = { "Artist", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
-					
-					String nullStr = "NULL";
-					String sep = "\t";
-					String row = attributeMap.containsKey(interestingKeys[0]) ? attributeMap.get(interestingKeys[0]) : nullStr;
-					
-					for (int j = 1; j < interestingKeys.length; j++) {
-						row += sep;
-						 String key = interestingKeys[j];
-						if (key.equals("Rating Computed") || key.equals("Album Rating Computed")) {
-							row += attributeMap.containsKey(key) ? "TRUE" : "FALSE";
-						} else {
-							row += attributeMap.containsKey(key) ? attributeMap.get(key) : nullStr;
+					boolean interestingArtist = false;
+					for (int j = 0; j < interestingArtists.length && !interestingArtist; j++) {
+						if (attributeMap.containsKey("Artist") && attributeMap.get("Artist").equals(interestingArtists[j])) {
+							interestingArtist = true;
 						}
 					}
 					
-					System.out.println(row);
+					boolean interestingTitle = false;
+					for (int j = 0; j < interestingTitles.length && !interestingTitle; j++) {
+						if (attributeMap.get("Name").equals(interestingTitles[j])) {
+							interestingTitle = true;
+						}
+					}
+
+					if (interestingArtist && interestingTitle) {
+						String row = attributeMap.containsKey(interestingKeys[0]) ? attributeMap.get(interestingKeys[0]) : nullStr;					
+						for (int j = 1; j < interestingKeys.length; j++) {
+							row += sep;
+							String key = interestingKeys[j];
+							if (key.equals("Rating Computed") || key.equals("Album Rating Computed")) {
+								row += attributeMap.containsKey(key) ? "TRUE" : "FALSE";
+							} else {
+								if (attributeMap.containsKey(key)) {
+									row += attributeMap.get(key);
+								} else {
+									row += nullStr;
+								}
+							}
+						}
+						System.out.println(row);
+					}
 				}
 			}
 		} catch (Exception e) {
