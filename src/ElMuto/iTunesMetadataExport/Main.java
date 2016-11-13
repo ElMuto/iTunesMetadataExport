@@ -21,8 +21,9 @@ public class Main {
 		String inputFileName = "data/iTunes Music Library.xml";		
 		String[] interestingKeys = { "Artist", "Album", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
 
-		String[] interestingArtists = { "Solange" };
-		String[] interestingTitles  = { "Rise", "Weary" };
+		String[] interestingArtists = { "Solange", "Polica", "A$AP Rocky", "The Mars Volta", "The Acid", "Thundercat" };
+		String[] interestingTitles  = { "Rise", "Weary", "Violent Games", "Lord Pretty Flacko Jodye 2 (Lpfj2)",
+				"Veda", "Vedamalady", "Walkin'"};
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
