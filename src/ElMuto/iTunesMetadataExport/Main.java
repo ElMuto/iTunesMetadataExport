@@ -26,35 +26,6 @@ import org.w3c.dom.NodeList;
 
 
 public class Main {
-	
-	private static int indent = 0;
-	private static String basicIndent ="\t";
-	
-	private class TitleMetadata {
-		public TitleMetadata(String title, String artist, int titleRating, Optional<Boolean> titleRatingComputed,
-				int albumRating, Optional<Boolean> albumRatingComputed) {
-			super();
-			this.title = title;
-			this.artist = artist;
-			this.titleRating = titleRating;
-			this.titleRatingComputed = titleRatingComputed;
-			this.albumRating = albumRating;
-			this.albumRatingComputed = albumRatingComputed;
-		}
-		private String title;
-		private String artist;
-		private int titleRating;
-		private Optional<Boolean> titleRatingComputed;
-		private int albumRating;
-		private Optional<Boolean>  albumRatingComputed;
-		
-		public void print() {
-			System.out.println(artist + " - " + title + ": " + titleRating) ;
-		}
-	}
-	
-
-
 	public static void main(String[] args) {
 
 		String inputFileName = "data/iTunes Music Library.xml";
@@ -88,16 +59,27 @@ public class Main {
 					for (int j = 0; j < attributes.getLength(); j++) {
 						Node attribute = attributes.item(j);
 						if(attribute.getNodeName().equals("key")) {
-							String key = attribute.getTextContent().trim();
-							String value = attribute.getNextSibling().getTextContent();
-							
-//							System.out.println(key + " = " + value);
-							attributeMap.put(key, value);
-//							if (key.equals("Artist")) System.out.println(value);
+							attributeMap.put(attribute.getTextContent().trim(), attribute.getNextSibling().getTextContent().trim());
 						}
 					}
 					
-					System.out.println(attributeMap.get("Artist") + " - " + attributeMap.get("Name"));
+					String[] interestingKeys = { "Artist", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
+					
+					String nullStr = "NULL";
+					String sep = "\t";
+					String row = attributeMap.containsKey(interestingKeys[0]) ? attributeMap.get(interestingKeys[0]) : nullStr;
+					
+					for (int j = 1; j < interestingKeys.length; j++) {
+						row += sep;
+						 String key = interestingKeys[j];
+						if (key.equals("Rating Computed") || key.equals("Album Rating Computed")) {
+							row += attributeMap.containsKey(key) ? "TRUE" : "FALSE";
+						} else {
+							row += attributeMap.containsKey(key) ? attributeMap.get(key) : nullStr;
+						}
+					}
+					
+					System.out.println(row);
 				}
 			}
 		} catch (Exception e) {
