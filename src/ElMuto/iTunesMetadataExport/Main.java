@@ -18,7 +18,8 @@ public class Main {
 		String nullStr = "NULL";
 		String sep = "\t";
 
-		String inputFileName = "data/iTunes Music Library.xml";		
+		String inputFileName = "data/iTunes Music Library.xml";
+		
 		String[] interestingKeys = { "Artist", "Album", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
 
 		String[] interestingArtists = { "Solange", "Polica", "A$AP Rocky", "The Mars Volta", "The Acid", "Thundercat",
