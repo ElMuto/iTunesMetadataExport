@@ -21,9 +21,10 @@ public class Main {
 		String inputFileName = "data/iTunes Music Library.xml";		
 		String[] interestingKeys = { "Artist", "Album", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
 
-		String[] interestingArtists = { "Solange", "Polica", "A$AP Rocky", "The Mars Volta", "The Acid", "Thundercat" };
+		String[] interestingArtists = { "Solange", "Polica", "A$AP Rocky", "The Mars Volta", "The Acid", "Thundercat",
+				"Ginger Baker's Air Force", "Amy Winehouse"};
 		String[] interestingTitles  = { "Rise", "Weary", "Violent Games", "Lord Pretty Flacko Jodye 2 (Lpfj2)",
-				"Veda", "Vedamalady", "Walkin'"};
+				"Veda", "Vedamalady", "Walkin'", "Da Da Man", "Early In The Morning", "Wake Up Alone"};
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
@@ -78,13 +79,20 @@ public class Main {
 						}
 					}
 
+					boolean ratingComputed 		= attributeMap.containsKey("Rating Computed") 		? true : false;
+					boolean albumRatingComputed = attributeMap.containsKey("Album Rating Computed") ? true : false;
+
+//					if (ratingComputed) {
 					if (interestingArtist && interestingTitle) {
 						String row = attributeMap.containsKey(interestingKeys[0]) ? attributeMap.get(interestingKeys[0]) : nullStr;					
 						for (int j = 1; j < interestingKeys.length; j++) {
 							row += sep;
 							String key = interestingKeys[j];
-							if (key.equals("Rating Computed") || key.equals("Album Rating Computed")) {
-								row += attributeMap.containsKey(key) ? "TRUE" : "FALSE";
+							
+							if (key.equals("Rating Computed")) {
+								row += String.valueOf(ratingComputed);
+							} else	if (key.equals("Album Rating Computed")) {
+								row += String.valueOf(albumRatingComputed);
 							} else {
 								if (attributeMap.containsKey(key)) {
 									row += attributeMap.get(key);
