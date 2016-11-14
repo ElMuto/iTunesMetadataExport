@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 
 
 public class Main {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		final boolean REMOVE_COMPUTED_RATINGS 			= true;
 		final boolean PRINT_TITLES_WITH_REMOVED_TAGS 	= true;
