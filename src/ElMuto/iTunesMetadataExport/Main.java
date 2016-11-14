@@ -21,23 +21,24 @@ import org.w3c.dom.NodeList;
 
 public class Main {
 	public static void main(String[] args) {
-		final boolean REMOVE_COMPUTED_RATINGS = true;
-		final boolean PRINT_TITLES_WITH_REMOVED_TAGS = false;
+		final boolean REMOVE_COMPUTED_RATINGS 			= true;
+		final boolean PRINT_TITLES_WITH_REMOVED_TAGS 	= true;
+		final boolean PRINT_INTERESINTG_TITLES 			= false;
+		
+		String iTunesDir = "C:/Users/work/Music/iTunes/";
+		String inputFileName = iTunesDir + "iTunes Music Library.xml";
 		
 		String nullStr = "NULL";
 		String sep = "\t";
 
-		String inputFileName = "data/iTunes Music Library.xml";
 		
 		String[] interestingKeys = { "Artist", "Album", "Name", "Rating", "Rating Computed", "Album Rating", "Album Rating Computed" };
-
 		String[] interestingArtists = { "Solange", "Polica", "A$AP Rocky", "The Mars Volta", "The Acid", "Thundercat",
 				"Ginger Baker's Air Force", "Amy Winehouse"};
 		String[] interestingTitles  = { "Rise", "Weary", "Violent Games", "Lord Pretty Flacko Jodye 2 (Lpfj2)",
 				"Veda", "Vedamalady", "Walkin'", "Da Da Man", "Early In The Morning", "Wake Up Alone"};
 		
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();		
 		dbf.setNamespaceAware(true);
 	    dbf.setValidating(true);
 	    
@@ -57,7 +58,7 @@ public class Main {
 				header += sep + interestingKeys[j];
 			}
 			
-			if (!PRINT_TITLES_WITH_REMOVED_TAGS) {
+			if (!PRINT_TITLES_WITH_REMOVED_TAGS && PRINT_INTERESINTG_TITLES) {
 				System.out.println(header);
 			}
 			
@@ -113,7 +114,7 @@ public class Main {
 						}
 					}
 					
-					if (interestingArtist && interestingTitle  && !PRINT_TITLES_WITH_REMOVED_TAGS) {
+					if (interestingArtist && interestingTitle && !PRINT_TITLES_WITH_REMOVED_TAGS && PRINT_INTERESINTG_TITLES) {
 						printTitleInfoToConsole(nullStr, sep, interestingKeys, attributeMap, ratingComputed,
 								albumRatingComputed);
 					}
@@ -121,7 +122,7 @@ public class Main {
 			}
 			Transformer tx = TransformerFactory.newInstance().newTransformer();
 			tx.setOutputProperty(OutputKeys.INDENT, "no");
-			tx.transform(new DOMSource( doc), new StreamResult(new FileOutputStream("data/iTunes Music Library.clean.xml")));
+			tx.transform(new DOMSource( doc), new StreamResult(new FileOutputStream(iTunesDir + "/iTunes Music Library.clean.xml")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
