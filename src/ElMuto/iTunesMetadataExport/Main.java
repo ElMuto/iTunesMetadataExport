@@ -32,8 +32,10 @@ public class Main {
 		
 		String defaultITunesDir = "C:/Users/" + System.getenv("USERNAME") + "/Music/iTunes";		
 		String inputFilePath = defaultITunesDir + "/" + inputFileName;
+		String outputFilePath = defaultITunesDir + "/" + outputFileName;
 		
-		System.out.println(inputFilePath);
+		System.out.println("Using             '" + inputFilePath + "'        as input");
+		
 		
 		String nullStr = "NULL";
 		String sep = "\t";
@@ -129,7 +131,9 @@ public class Main {
 			}
 			Transformer tx = TransformerFactory.newInstance().newTransformer();
 			tx.setOutputProperty(OutputKeys.INDENT, "no");
-			tx.transform(new DOMSource( doc), new StreamResult(new FileOutputStream(defaultITunesDir + "/" + outputFileName)));
+			
+			System.out.println("Writing result to '" + outputFilePath + "'");
+			tx.transform(new DOMSource( doc), new StreamResult(new FileOutputStream(outputFilePath)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
