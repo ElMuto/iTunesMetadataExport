@@ -1,5 +1,3 @@
-package ElMuto.iTunesMetadataExport;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -19,7 +17,7 @@ import org.w3c.dom.NodeList;
 
 
 
-public class Main {
+public class iTunesMetadataExport {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
