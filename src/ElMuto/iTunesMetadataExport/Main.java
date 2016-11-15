@@ -22,12 +22,18 @@ import org.w3c.dom.NodeList;
 public class Main {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
+		
 		final boolean REMOVE_COMPUTED_RATINGS 			= true;
 		final boolean PRINT_TITLES_WITH_REMOVED_TAGS 	= true;
 		final boolean PRINT_INTERESINTG_TITLES 			= false;
+
+		String inputFileName  = "iTunes Music Library.xml";
+		String outputFileName = "iTunes Music Library.clean.xml";
 		
-		String iTunesDir = "C:/Users/work/Music/iTunes/";
-		String inputFileName = iTunesDir + "iTunes Music Library.xml";
+		String defaultITunesDir = "C:/Users/" + System.getenv("USERNAME") + "/Music/iTunes";		
+		String inputFilePath = defaultITunesDir + "/" + inputFileName;
+		
+		System.out.println(inputFilePath);
 		
 		String nullStr = "NULL";
 		String sep = "\t";
@@ -46,7 +52,7 @@ public class Main {
 	    DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse(new File(inputFileName));
+			Document doc = db.parse(new File(inputFilePath));
 			
 			Node mainDict = doc.getChildNodes().item(1).getChildNodes().item(1);
 
@@ -123,7 +129,7 @@ public class Main {
 			}
 			Transformer tx = TransformerFactory.newInstance().newTransformer();
 			tx.setOutputProperty(OutputKeys.INDENT, "no");
-			tx.transform(new DOMSource( doc), new StreamResult(new FileOutputStream(iTunesDir + "/iTunes Music Library.clean.xml")));
+			tx.transform(new DOMSource( doc), new StreamResult(new FileOutputStream(defaultITunesDir + "/" + outputFileName)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
