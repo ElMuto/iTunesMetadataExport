@@ -28,9 +28,9 @@ public class iTunesMetadataExport {
 		String inputFileName  = "iTunes Music Library.xml";
 		String outputFileName = "iTunes Music Library.clean.xml";
 		
-		String defaultITunesDir = "C:/Users/" + System.getenv("USERNAME") + "/Music/iTunes";		
-		String inputFilePath = defaultITunesDir + "/" + inputFileName;
-		String outputFilePath = defaultITunesDir + "/" + outputFileName;
+		String defaultITunesDir = System.getenv("USERPROFILE") + "\\Music\\iTunes";		
+		String inputFilePath = defaultITunesDir + "\\" + inputFileName;
+		String outputFilePath = defaultITunesDir + "\\" + outputFileName;
 		
 		System.out.println("Using             '" + inputFilePath + "'        as input");
 		
